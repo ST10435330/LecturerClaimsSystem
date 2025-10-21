@@ -1,0 +1,110 @@
+﻿@model LecturerClaimsSystem.Models.Claim
+@{
+    ViewData["Title"] = "Claim Details";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3>📄 Claim Details - #@Model.ClaimId</h3>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Lecturer Name:</strong>
+                        <p>@Model.LecturerName</p>
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Status:</strong>
+                        <p><span class="status-badge status-@Model.Status.ToLower()">@Model.Status</span></p>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Hours Worked:</strong>
+                        <p>@Model.HoursWorked hours</p>
+                    </div>
+                    <div class="col-md-6">
+                        <strong>Hourly Rate:</strong>
+                        <p>@Model.HourlyRate.ToString("N2")</p>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <strong>Total Amount:</strong>
+                        <h4 class="text-success">@Model.TotalAmount.ToString("N2")</h4>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <strong>Submitted Date:</strong>
+                        <p>@Model.SubmittedDate.ToString("dd MMMM yyyy HH:mm")</p>
+                    </div>
+                    @if (Model.ReviewedDate != null)
+                    {
+                        <div class="col-md-6">
+                            <strong>Reviewed Date:</strong>
+                            <p>@Model.ReviewedDate?.ToString("dd MMMM yyyy HH:mm")</p>
+                        </div>
+                    }
+                </div>
+
+                @if (!string.IsNullOrEmpty(Model.ReviewedBy))
+                {
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <strong>Reviewed By:</strong>
+                            <p>@Model.ReviewedBy</p>
+                        </div>
+                    </div>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.AdditionalNotes))
+                {
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <strong>Additional Notes:</strong>
+                            <p class="bg-light p-3 rounded">@Model.AdditionalNotes</p>
+                        </div>
+                    </div>
+                }
+
+                @if (Model.Status == "Rejected" && !string.IsNullOrEmpty(Model.RejectionReason))
+                {
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <div class="alert alert-danger">
+                                <strong>Rejection Reason:</strong>
+                                <p class="mb-0">@Model.RejectionReason</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                @if (!string.IsNullOrEmpty(Model.DocumentPath))
+                {
+                    <div class="row mb-3">
+                        <div class="col-md-12">
+                            <strong>Supporting Document:</strong>
+                            <p>
+                                <a href="@Model.DocumentPath" target="_blank" class="btn btn-outline-primary">
+                                    📎 Download @Model.OriginalFileName
+                                </a>
+                            </p>
+                        </div>
+                    </div>
+                }
+
+                <div class="d-grid">
+                    <a asp-action="Index" class="btn btn-secondary">
+                        ← Back to My Claims
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

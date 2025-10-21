@@ -1,0 +1,118 @@
+﻿@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Lecturer Claims System</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .login-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+            .login-header h2 {
+                color: #333;
+                font-weight: bold;
+            }
+
+        .login-icon {
+            font-size: 60px;
+            margin-bottom: 20px;
+        }
+
+        .form-control {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #ddd;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: transform 0.3s;
+        }
+
+            .btn-login:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            }
+
+        .demo-credentials {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            font-size: 0.85rem;
+        }
+
+            .demo-credentials strong {
+                display: block;
+                margin-bottom: 5px;
+                color: #667eea;
+            }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <div class="login-icon">📚</div>
+            <h2>Lecturer Claims System</h2>
+            <p class="text-muted">Please login to continue</p>
+        </div>
+
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger">@ViewBag.Error</div>
+        }
+
+        <form method="post" asp-action="Login">
+            <div class="mb-3">
+                <label class="form-label">Username</label>
+                <input type="text" name="username" class="form-control" required />
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Password</label>
+                <input type="password" name="password" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-login">Login</button>
+        </form>
+
+        <div class="demo-credentials">
+            <strong>Demo Accounts:</strong>
+            <div><strong>Lecturer:</strong> lecturer1 / password123</div>
+            <div><strong>Coordinator:</strong> coordinator1 / password123</div>
+            <div><strong>Manager:</strong> manager1 / password123</div>
+        </div>
+    </div>
+</body>
+</html>

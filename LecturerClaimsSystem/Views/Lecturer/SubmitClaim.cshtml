@@ -1,0 +1,77 @@
+﻿@model LecturerClaimsSystem.Models.Claim
+@{
+    ViewData["Title"] = "Submit Claim";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3>📝 Submit New Claim</h3>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data" asp-action="SubmitClaim">
+                    <div asp-validation-summary="All" class="text-danger"></div>
+
+                    <div class="mb-3">
+                        <label asp-for="HoursWorked" class="form-label">Hours Worked</label>
+                        <input asp-for="HoursWorked" class="form-control" type="number" step="0.5" min="1" max="744" required />
+                        <span asp-validation-for="HoursWorked" class="text-danger"></span>
+                        <small class="form-text text-muted">Enter the number of hours worked (e.g., 8 or 8.5)</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="HourlyRate" class="form-label">Hourly Rate (R)</label>
+                        <input asp-for="HourlyRate" class="form-control" type="number" step="0.01" min="1" required />
+                        <span asp-validation-for="HourlyRate" class="text-danger"></span>
+                        <small class="form-text text-muted">Enter your hourly rate in Rands</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="AdditionalNotes" class="form-label">Additional Notes (Optional)</label>
+                        <textarea asp-for="AdditionalNotes" class="form-control" rows="
+                                                <textarea asp-for="AdditionalNotes" class="form-control" rows="4"></textarea>
+                        <span asp-validation-for="AdditionalNotes" class="text-danger"></span>
+                        <small class="form-text text-muted">Any additional information about this claim</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="document" class="form-label">Upload Supporting Document (Optional)</label>
+                        <input type="file" name="document" id="document" class="form-control" accept=".pdf,.docx,.xlsx,.doc,.xls" />
+                        <small class="form-text text-muted">Accepted formats: PDF, Word, Excel (Max 5MB)</small>
+                    </div>
+
+                    <div class="mb-3" id="filePreview" style="display:none;">
+                        <div class="alert alert-info">
+                            <strong>Selected file:</strong> <span id="fileName"></span>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            ✓ Submit Claim
+                        </button>
+                        <a asp-action="Index" class="btn btn-secondary">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        document.getElementById('document').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                document.getElementById('fileName').textContent = file.name;
+                document.getElementById('filePreview').style.display = 'block';
+            } else {
+                document.getElementById('filePreview').style.display = 'none';
+            }
+        });
+    </script>
+}

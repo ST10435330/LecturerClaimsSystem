@@ -1,0 +1,50 @@
+﻿@model IEnumerable<LecturerClaimsSystem.Models.Claim>
+
+@if (Model.Any())
+{
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="table-light">
+                <tr>
+                    <th>Claim ID</th>
+                    <th>Lecturer</th>
+                    <th>Hours</th>
+                    <th>Rate</th>
+                    <th>Total Amount</th>
+                    <th>Submitted</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var claim in Model)
+                {
+                    <tr>
+                        <td><strong>#@claim.ClaimId</strong></td>
+                        <td>@claim.LecturerName</td>
+                        <td>@claim.HoursWorked hrs</td>
+                        <td>@claim.HourlyRate</td>
+                        <td><strong class="text-success">@claim.TotalAmount.ToString("N2")</strong></td>
+                        <td>@claim.SubmittedDate.ToString("dd/MM/yyyy")</td>
+                        <td>
+                            <span class="status-badge status-@claim.Status.ToLower()">
+                                @claim.Status
+                            </span>
+                        </td>
+                        <td>
+                            <a asp-action="ViewClaim" asp-route-id="@claim.ClaimId" class="btn btn-sm btn-primary">
+                                View Details
+                            </a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div class="alert alert-info">
+        <p class="mb-0">No claims found in this category.</p>
+    </div>
+}
