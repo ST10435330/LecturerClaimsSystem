@@ -11,3 +11,6 @@ manager1 / password123
 
 HR:
 hr1 / password123
+
+**YouTube Demo Video:**
+https://www.youtube.com/watch?v=ZWJvCVrIL5w
