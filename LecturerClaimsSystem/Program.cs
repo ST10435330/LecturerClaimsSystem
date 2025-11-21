@@ -19,6 +19,7 @@ builder.Services.AddSession(options =>
 });
 
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<LecturerClaimsSystem.Services.ClaimValidationService>();
 
 var app = builder.Build();
 

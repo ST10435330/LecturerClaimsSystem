@@ -1,0 +1,64 @@
+﻿@model LecturerClaimsSystem.Models.User
+@{
+    ViewData["Title"] = "Edit Lecturer";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-warning text-dark">
+                <h3>✏️ Edit Lecturer Information</h3>
+            </div>
+            <div class="card-body">
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger">
+                        @TempData["Error"]
+                    </div>
+                }
+
+                <form method="post" asp-action="EditLecturer">
+                    <input type="hidden" asp-for="UserId" />
+                    <input type="hidden" asp-for="Role" />
+
+                    <div class="mb-3">
+                        <label asp-for="FullName" class="form-label">Full Name *</label>
+                        <input asp-for="FullName" class="form-control" required />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Username" class="form-label">Username *</label>
+                        <input asp-for="Username" class="form-control" required />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                        <small class="form-text text-muted">Used for login</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label">New Password</label>
+                        <input asp-for="Password" type="password" class="form-control" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                        <small class="form-text text-muted">Leave blank to keep current password</small>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <strong>ℹ️ Note:</strong> Changing the full name will affect how claims are displayed, but existing claims will retain the old name.
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-warning btn-lg">
+                            ✓ Save Changes
+                        </button>
+                        <a asp-action="LecturerDetails" asp-route-id="@Model.UserId" class="btn btn-secondary">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

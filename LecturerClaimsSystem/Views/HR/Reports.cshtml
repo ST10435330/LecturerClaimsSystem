@@ -1,0 +1,146 @@
+﻿@{
+    ViewData["Title"] = "Claims Reports";
+    var stats = ViewBag.Stats;
+    var claims = ViewBag.Claims as List<LecturerClaimsSystem.Models.Claim>;
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <h2>📊 Claims Analytics & Reports</h2>
+        <p class="text-muted">Comprehensive overview of all claims</p>
+
+        <!-- Statistics Cards -->
+        <div class="row mt-4">
+            <div class="col-md-3">
+                <div class="card bg-primary text-white">
+                    <div class="card-body text-center">
+                        <h3>@stats.TotalClaims</h3>
+                        <p>Total Claims</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-warning text-white">
+                    <div class="card-body text-center">
+                        <h3>@stats.PendingClaims</h3>
+                        <p>Pending</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-success text-white">
+                    <div class="card-body text-center">
+                        <h3>@stats.ApprovedClaims</h3>
+                        <p>Approved</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card bg-danger text-white">
+                    <div class="card-body text-center">
+                        <h3>@stats.RejectedClaims</h3>
+                        <p>Rejected</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Financial Summary -->
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-info text-white">
+                        <h5>💰 Financial Summary</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <h6>Total Approved Amount</h6>
+                                <h3 class="text-success">@stats.TotalApprovedAmount.ToString("N2")</h3>
+                            </div>
+                            <div class="col-md-3">
+                                <h6>Average Claim</h6>
+                                <h4>@stats.AverageClaimAmount.ToString("N2")</h4>
+                            </div>
+                            <div class="col-md-3">
+                                <h6>Highest Claim</h6>
+                                <h4>@stats.HighestClaim.ToString("N2")</h4>
+                            </div>
+                            <div class="col-md-3">
+                                <h6>Lowest Claim</h6>
+                                <h4>@stats.LowestClaim.ToString("N2")</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Approved Claims for Payment -->
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header bg-success text-white">
+                        <h5>✓ Approved Claims Ready for Payment</h5>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Claim ID</th>
+                                    <th>Lecturer</th>
+                                    <th>Amount</th>
+                                    <th>Approved Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var claim in claims.Where(c => c.Status == "Approved"))
+                                {
+                                    <tr>
+                                        <td><strong>#@claim.ClaimId</strong></td>
+                                        <td>@claim.LecturerName</td>
+                                        <td><strong class="text-success">@claim.TotalAmount.ToString("N2")</strong></td>
+                                        <td>@claim.ReviewedDate?.ToString("dd MMM yyyy")</td>
+                                        <td>
+                                            <a asp-action="GenerateInvoice" asp-route-id="@claim.ClaimId"
+                                               class="btn btn-sm btn-primary">
+                                                📄 Generate Invoice
+                                            </a>
+                                            <a asp-action="DownloadInvoice" asp-route-id="@claim.ClaimId"
+                                               class="btn btn-sm btn-success">
+                                                ⬇️ Download
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="row mt-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>⚡ Quick Actions</h5>
+                    </div>
+                    <div class="card-body">
+                        <a asp-action="MonthlyReport" class="btn btn-primary me-2">
+                            📅 Generate Monthly Report
+                        </a>
+                        <a asp-action="DownloadMonthlyReport" class="btn btn-success me-2">
+                            ⬇️ Download Monthly CSV
+                        </a>
+                        <a asp-controller="Review" asp-action="Index" class="btn btn-info">
+                            🔍 Review All Claims
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

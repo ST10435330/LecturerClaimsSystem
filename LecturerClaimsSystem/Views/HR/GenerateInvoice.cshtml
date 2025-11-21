@@ -1,0 +1,115 @@
+﻿@model LecturerClaimsSystem.Models.Claim
+@{
+    ViewData["Title"] = "Invoice";
+}
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-body" id="invoiceContent">
+                <!-- Invoice Header -->
+                <div class="text-center mb-4">
+                    <h2>🏛️ ABC UNIVERSITY</h2>
+                    <p>Department of Academic Affairs</p>
+                    <hr />
+                    <h3>PAYMENT INVOICE</h3>
+                </div>
+
+                <!-- Invoice Details -->
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <strong>Invoice Number:</strong> INV-@Model.ClaimId-@DateTime.Now.Year<br />
+                        <strong>Invoice Date:</strong> @DateTime.Now.ToString("dd MMMM yyyy")<br />
+                        <strong>Claim ID:</strong> #@Model.ClaimId
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <strong>Status:</strong> <span class="badge bg-success">@Model.Status</span><br />
+                        <strong>Approved By:</strong> @Model.ReviewedBy<br />
+                        <strong>Approved Date:</strong> @Model.ReviewedDate?.ToString("dd MMM yyyy")
+                    </div>
+                </div>
+
+                <!-- Payee Information -->
+                <div class="card bg-light mb-4">
+                    <div class="card-body">
+                        <h5>Payee Information</h5>
+                        <strong>Name:</strong> @Model.LecturerName<br />
+                        <strong>Role:</strong> Lecturer<br />
+                    </div>
+                </div>
+
+                <!-- Claim Details -->
+                <h5>Claim Details</h5>
+                <table class="table table-bordered">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Description</th>
+                            <th class="text-end">Hours</th>
+                            <th class="text-end">Rate (R)</th>
+                            <th class="text-end">Amount (R)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Lecturer Services<br /><small class="text-muted">@Model.AdditionalNotes</small></td>
+                            <td class="text-end">@Model.HoursWorked</td>
+                            <td class="text-end">@Model.HourlyRate.ToString("N2")</td>
+                            <td class="text-end"><strong>@Model.TotalAmount.ToString("N2")</strong></td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr class="table-success">
+                            <td colspan="3" class="text-end"><strong>TOTAL AMOUNT DUE:</strong></td>
+                            <td class="text-end"><h4 class="mb-0">R @Model.TotalAmount.ToString("N2")</h4></td>
+                        </tr>
+                    </tfoot>
+                </table>
+
+                <!-- Additional Information -->
+                <div class="row mt-4">
+                    <div class="col-md-12">
+                        <div class="alert alert-info">
+                            <strong>ℹ️ Payment Information:</strong>
+                            <ul class="mb-0">
+                                <li>Payment will be processed within 7-10 business days</li>
+                                <li>Amount will be deposited directly into registered bank account</li>
+                                <li>For queries, contact HR Department: hr@university.edu</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="text-center mt-4 pt-4 border-top">
+                    <p class="text-muted">
+                        <small>
+                            This is a computer-generated invoice and does not require a signature.<br />
+                            Generated on @DateTime.Now.ToString("dd MMMM yyyy HH:mm")
+                        </small>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="card-footer">
+                <a asp-action="DownloadInvoice" asp-route-id="@Model.ClaimId" class="btn btn-success">
+                    ⬇️ Download Invoice (CSV)
+                </a>
+                <button onclick="window.print()" class="btn btn-primary">
+                    🖨️ Print Invoice
+                </button>
+                <a asp-action="Reports" class="btn btn-secondary">
+                    ← Back to Reports
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    @@media print {
+        .btn, .card-footer {
+            display: none;
+        }
+    }
+</style>

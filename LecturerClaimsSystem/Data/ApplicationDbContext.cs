@@ -42,6 +42,14 @@ namespace LecturerClaimsSystem.Data
                     Password = "password123",
                     Role = "Manager",
                     FullName = "Bob Johnson"
+                },
+                new User
+                {
+                    UserId = 4,
+                    Username = "hr1",
+                    Password = "password123",
+                    Role = "HR",
+                    FullName = "Sarah Williams"
                 }
             );
         }

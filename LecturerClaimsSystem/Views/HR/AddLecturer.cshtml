@@ -1,0 +1,83 @@
+﻿@model LecturerClaimsSystem.Models.User
+@{
+    ViewData["Title"] = "Add Lecturer";
+}
+B
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3>➕ Add New Lecturer</h3>
+            </div>
+            <div class="card-body">
+                @if (TempData["Error"] != null)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show">
+                        @TempData["Error"]
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                }
+
+                <form method="post" asp-action="AddLecturer">
+                    @Html.AntiForgeryToken()
+
+                    <div class="mb-3">
+                        <label asp-for="FullName" class="form-label">Full Name *</label>
+                        <input asp-for="FullName" class="form-control" required placeholder="e.g., Dr. Sarah Johnson" />
+                        <span asp-validation-for="FullName" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Username" class="form-label">Username *</label>
+                        <input asp-for="Username" class="form-control" required placeholder="e.g., sjohnson" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                        <small class="form-text text-muted">Must be unique - used for login</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Password" class="form-label">Password *</label>
+                        <input asp-for="Password" type="password" class="form-control" required placeholder="Enter password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                        <small class="form-text text-muted">Minimum 8 characters recommended</small>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <strong>ℹ️ Note:</strong>
+                        <ul class="mb-0">
+                            <li>The lecturer will use the username and password to login</li>
+                            <li>Role will automatically be set to "Lecturer"</li>
+                            <li>Lecturer can submit claims immediately after creation</li>
+                        </ul>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-lg">
+                            ✓ Add Lecturer
+                        </button>
+                        <a asp-action="LecturerManagement" class="btn btn-secondary">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Quick Reference Card -->
+        <div class="card mt-3">
+            <div class="card-header bg-light">
+                <h5>📌 Quick Reference</h5>
+            </div>
+            <div class="card-body">
+                <h6>Current Lecturers in System:</h6>
+                <ul>
+                    <li><strong>lecturer1</strong> - John Smith</li>
+                </ul>
+                <small class="text-muted">Make sure the new username is different from existing ones.</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

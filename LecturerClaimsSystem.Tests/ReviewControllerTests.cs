@@ -1,6 +1,7 @@
 ﻿using LecturerClaimsSystem.Controllers;
 using LecturerClaimsSystem.Data;
 using LecturerClaimsSystem.Models;
+using LecturerClaimsSystem.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -30,7 +31,10 @@ namespace LecturerClaimsSystem.Tests
             string role = "Coordinator",
             string fullName = "Test Coordinator")
         {
-            var controller = new ReviewController(context);
+            // Create validation service
+            var validationService = new ClaimValidationService();
+
+            var controller = new ReviewController(context, validationService);
 
             var mockHttpContext = new Mock<HttpContext>();
             var mockSession = new Mock<ISession>();
@@ -217,8 +221,9 @@ namespace LecturerClaimsSystem.Tests
         [Theory]
         [InlineData("Coordinator")]
         [InlineData("Manager")]
+        [InlineData("HR")]
         [Trait("Category", "Controller")]
-        public void Index_AllowsAccess_ForCoordinatorAndManager(string role)
+        public void Index_AllowsAccess_ForCoordinatorManagerAndHR(string role)
         {
             // Arrange
             var context = GetInMemoryDbContext();
@@ -229,6 +234,34 @@ namespace LecturerClaimsSystem.Tests
 
             // Assert
             Assert.NotNull(result);
+        }
+
+        [Fact]
+        [Trait("Category", "Controller")]
+        public void AutoApproveClaim_ApprovesEligibleClaim()
+        {
+            // Arrange
+            var context = GetInMemoryDbContext();
+            var claim = new Claim
+            {
+                LecturerName = "Test Lecturer",
+                HoursWorked = 8, // Low hours
+                HourlyRate = 200, // Within range
+                Status = "Pending",
+                DocumentPath = "/uploads/doc.pdf" // Has document
+            };
+            context.Claims.Add(claim);
+            context.SaveChanges();
+
+            var controller = CreateControllerWithSession(context);
+
+            // Act
+            var result = controller.AutoApproveClaim(claim.ClaimId);
+
+            // Assert
+            var updatedClaim = context.Claims.Find(claim.ClaimId);
+            Assert.Equal("Approved", updatedClaim.Status);
+            Assert.Contains("Auto-Approved", updatedClaim.ReviewedBy);
         }
     }
 }
